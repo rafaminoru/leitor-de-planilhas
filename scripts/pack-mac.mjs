@@ -31,12 +31,25 @@ const result = spawnSync(
 )
 if (result.status !== 0) process.exit(result.status ?? 1)
 
-const found = fs.readdirSync(outDir).filter((name) => name.endsWith('.zip'))
+function listZips(dir) {
+  if (!fs.existsSync(dir)) return []
+  return fs
+    .readdirSync(dir)
+    .filter((name) => name.endsWith('.zip'))
+    .map((name) => path.join(dir, name))
+}
+
+const found = [
+  ...listZips(outDir),
+  ...listZips(path.join(process.cwd(), 'release')),
+]
 if (found.length === 0) {
-  console.error('Zip macOS não encontrado em', outDir, fs.readdirSync(outDir))
+  console.error('Zip macOS não encontrado.')
+  console.error('tmp', outDir, fs.existsSync(outDir) ? fs.readdirSync(outDir) : '(ausente)')
+  console.error('release', fs.existsSync('release') ? fs.readdirSync('release') : '(ausente)')
   process.exit(1)
 }
-const built = path.join(outDir, found[0])
+const built = found[0]
 
 fs.mkdirSync(destDir, { recursive: true })
 fs.mkdirSync(downloadDir, { recursive: true })

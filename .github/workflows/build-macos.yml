@@ -27,10 +27,20 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - run: npm run exe:mac
+      - run: npm run build
+      - name: Empacota o .app macOS
+        run: npx electron-builder --mac zip --arm64
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-          CI: 'true'
+      - name: Copia o zip para downloads
+        run: |
+          mkdir -p downloads
+          ZIP=$(find . -name '*.zip' -path './release/*' -print -quit)
+          if [ -z "$ZIP" ]; then ZIP=$(find . -name '*mac*.zip' -print -quit); fi
+          echo "ZIP=$ZIP"
+          ls -la release || true
+          cp "$ZIP" downloads/Visualizador-de-Planilhas-macOS.zip
+          ls -lh downloads/Visualizador-de-Planilhas-macOS.zip
       - uses: actions/upload-artifact@v4
         with:
           name: Visualizador-de-Planilhas-macOS
