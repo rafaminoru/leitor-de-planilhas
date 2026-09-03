@@ -1,0 +1,66 @@
+{
+  "name": "leitor-xlsx",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "electron/main.mjs",
+  "author": "leitor-xlsx",
+  "description": "Visualizador local de planilhas CSV/XLSX",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "samples": "node scripts/generate-samples.mjs",
+    "electron": "npm run build && electron .",
+    "exe": "npm run build && node scripts/build-exe.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-table": "^9.2.4",
+    "@tanstack/react-virtual": "^3.14.10",
+    "papaparse": "^5.7.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.13.3",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12",
+    "oxlint": "^1.79.0",
+    "playwright-core": "^1.62.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2"
+  },
+  "build": {
+    "appId": "dev.leitorxlsx.viewer",
+    "productName": "Visualizador de Planilhas",
+    "copyright": "Uso local",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "Visualizador-de-Planilhas.exe"
+    },
+    "portable": {
+      "artifactName": "Visualizador-de-Planilhas.exe"
+    }
+  }
+}
