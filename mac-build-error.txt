@@ -1,0 +1,16 @@
+  • electron-builder  version=26.15.3 os=25.5.0
+  • Implicit publishing triggered by CI detection. This behavior will be disabled in electron-builder v27. Please use --publish explicitly.
+  • loaded configuration  file=package.json ("build" field)
+  • executing @electron/rebuild  electronVersion=38.8.6 arch=arm64 buildFromSource=false workspaceRoot=/Users/runner/work/leitor-de-planilhas/leitor-de-planilhas projectDir=./ appDir=./
+  • installing native dependencies  arch=arm64
+  • completed installing native dependencies
+  • packaging       platform=darwin arch=arm64 electron=38.8.6 appOutDir=release/mac-arm64
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=/Users/runner/work/leitor-de-planilhas/leitor-de-planilhas/release/mac-arm64
+  • searching for node modules  pm=npm searchDir=/Users/runner/work/leitor-de-planilhas/leitor-de-planilhas
+  • duplicate dependency references  dependencies=["react-dom@19.2.8","react-dom@19.2.8"]
+  • default Electron icon is used  reason=application icon is not set
+  • skipped macOS code signing  reason=identity explicitly is set to null
+  • building        target=macOS zip arch=arm64 file=release/Visualizador-de-Planilhas-macOS.zip
+  • building block map  blockMapFile=release/Visualizador-de-Planilhas-macOS.zip.blockmap
+  ⨯ GitHub Personal Access Token is not set, neither programmatically, nor using env "GH_TOKEN"
