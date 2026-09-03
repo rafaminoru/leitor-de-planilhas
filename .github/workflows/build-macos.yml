@@ -29,9 +29,20 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Empacota o .app macOS
-        run: npx electron-builder --mac zip --arm64
+        id: pack
+        continue-on-error: true
+        run: npx electron-builder --mac zip --arm64 > mac-build-error.txt 2>&1
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Publica log se o build falhar
+        if: steps.pack.outcome == 'failure'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mac-build-error.txt
+          git commit -m "debug: log do build macOS"
+          git push
+          exit 1
       - name: Copia o zip para downloads
         run: |
           mkdir -p downloads
