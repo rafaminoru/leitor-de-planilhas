@@ -29,41 +29,29 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Empacota o .app macOS
-        id: pack
-        continue-on-error: true
-        run: npx electron-builder --mac zip --arm64 --publish never > mac-build-error.txt 2>&1
+        run: npx electron-builder --mac zip --arm64 --publish never
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-      - name: Publica log se o build falhar
-        if: steps.pack.outcome == 'failure'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add mac-build-error.txt
-          git commit -m "debug: log do build macOS"
-          git push
-          exit 1
       - name: Copia o zip para downloads
         run: |
           mkdir -p downloads
-          ZIP=$(find . -name '*.zip' -path './release/*' -print -quit)
-          if [ -z "$ZIP" ]; then ZIP=$(find . -name '*mac*.zip' -print -quit); fi
+          ZIP=$(find release -name '*.zip' -print -quit)
           echo "ZIP=$ZIP"
-          ls -la release || true
+          ls -lh release || true
           cp "$ZIP" downloads/Visualizador-de-Planilhas-macOS.zip
           ls -lh downloads/Visualizador-de-Planilhas-macOS.zip
       - uses: actions/upload-artifact@v4
         with:
           name: Visualizador-de-Planilhas-macOS
           path: downloads/Visualizador-de-Planilhas-macOS.zip
-      - name: Publica o zip no repositório
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add downloads/Visualizador-de-Planilhas-macOS.zip
-          if git diff --cached --quiet; then
-            echo "Nenhuma mudança no zip"
-            exit 0
-          fi
-          git commit -m "Adiciona executável macOS"
-          git push
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: Visualizador de Planilhas 1.0.0
+          files: downloads/Visualizador-de-Planilhas-macOS.zip
+          fail_on_unmatched_files: true
+          make_latest: true
+          body: |
+            ## Downloads
+            - Windows: [Visualizador-de-Planilhas.exe](https://github.com/rafaminoru/leitor-de-planilhas/raw/main/downloads/Visualizador-de-Planilhas.exe)
+            - macOS Apple Silicon: anexo deste release
