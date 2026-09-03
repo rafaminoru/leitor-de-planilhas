@@ -53,6 +53,7 @@
       "electron/**/*"
     ],
     "asar": true,
+    "publish": null,
     "win": {
       "target": [
         {

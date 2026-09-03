@@ -26,7 +26,7 @@ const env = {
 
 const result = spawnSync(
   process.execPath,
-  [builderCli, '--mac', 'zip', '--arm64', `-c.directories.output=${outDir}`],
+  [builderCli, '--mac', 'zip', '--arm64', '--publish', 'never', `-c.directories.output=${outDir}`],
   { stdio: 'inherit', env },
 )
 if (result.status !== 0) process.exit(result.status ?? 1)

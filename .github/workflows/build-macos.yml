@@ -31,7 +31,7 @@ jobs:
       - name: Empacota o .app macOS
         id: pack
         continue-on-error: true
-        run: npx electron-builder --mac zip --arm64 > mac-build-error.txt 2>&1
+        run: npx electron-builder --mac zip --arm64 --publish never > mac-build-error.txt 2>&1
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
       - name: Publica log se o build falhar
