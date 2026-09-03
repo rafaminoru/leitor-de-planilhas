@@ -4,22 +4,31 @@ Abre CSV/TSV/XLSX/XLS e mostra o conteúdo em tabela. Sem backend, sem edição,
 
 ## Download
 
-**[Download para Windows](https://github.com/rafaminoru/leitor-de-planilhas/raw/main/downloads/Visualizador-de-Planilhas.exe)** (~83 MB)
+- **[Windows (.exe)](https://github.com/rafaminoru/leitor-de-planilhas/raw/main/downloads/Visualizador-de-Planilhas.exe)** (~83 MB)
+- **[macOS (.zip)](https://github.com/rafaminoru/leitor-de-planilhas/raw/main/downloads/Visualizador-de-Planilhas-macOS.zip)** (Intel e Apple Silicon)
 
-1. Clique no link acima e salve o `.exe`.
-2. Clique duas vezes no arquivo.
-3. Arraste a planilha para a janela (ou use **+** / **Abrir arquivos**).
+### Windows
 
-Não precisa instalar Node, npm nem navegador. O primeiro clique pode levar ~10 s. O Windows SmartScreen pode avisar porque o arquivo não é assinado — escolha **Mais informações** → **Executar assim mesmo**.
+1. Baixe o `.exe` e clique duas vezes.
+2. Arraste a planilha para a janela (ou use **+** / **Abrir arquivos**).
 
-Quem tem o código e quer gerar o `.exe` de novo:
+O Windows SmartScreen pode avisar porque o arquivo não é assinado — escolha **Mais informações** → **Executar assim mesmo**. O primeiro clique pode levar ~10 s.
+
+### macOS
+
+1. Baixe o `.zip` e extraia o `Visualizador de Planilhas.app`.
+2. Arraste o app para **Aplicativos** (ou abra direto da pasta).
+3. Na primeira vez: clique com o botão direito no app → **Abrir** → **Abrir**. O Gatekeeper avisa porque o app não é assinado pela Apple.
+
+Quem tem o código e quer gerar de novo:
 
 ```bash
 npm install
-npm run exe
+npm run exe       # Windows (nesta máquina)
+npm run exe:mac   # macOS (precisa rodar em um Mac)
 ```
 
-O build também copia o arquivo para `downloads/Visualizador-de-Planilhas.exe`.
+O zip de macOS também é gerado automaticamente no GitHub Actions e publicado em `downloads/`.
 
 ## Para quem desenvolve
 
@@ -63,7 +72,7 @@ Isso cria a pasta `samples/` com CSV latin1, CSV com aspas/quebras de linha, XLS
 - Fórmulas do Excel aparecem como o valor já calculado (cache), não como fórmula.
 - Encoding automático só distingue UTF-8 de Windows-1252. ISO-8859-1 é override manual (para português os dois latin1 são equivalentes).
 - Ordenar/filtrar 200 mil linhas pode levar algumas centenas de ms na thread principal.
-- O `.exe` não é assinado. O Windows SmartScreen pode avisar na primeira execução — escolha **Mais informações** → **Executar assim mesmo**.
+- Os instaláveis não são assinados. Windows (SmartScreen) e macOS (Gatekeeper) avisam na primeira execução.
 
 ## Scripts
 
@@ -72,5 +81,6 @@ npm run dev       # servidor local
 npm run build     # checagem TypeScript + bundle
 npm run samples   # gera samples/
 npm run electron  # abre a janela desktop a partir do build
-npm run exe       # gera o .exe (release/ e downloads/)
+npm run exe       # gera o .exe Windows
+npm run exe:mac   # gera o .zip macOS (precisa de um Mac)
 ```

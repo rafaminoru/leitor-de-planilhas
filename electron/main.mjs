@@ -6,13 +6,20 @@ import { pathToFileURL, fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DIST_DIR = path.join(__dirname, '..', 'dist')
 
-app.setPath(
-  'userData',
-  path.join(
-    process.env.LOCALAPPDATA || process.env.APPDATA || os.tmpdir(),
-    'VisualizadorPlanilhas',
-  ),
-)
+function userDataDir() {
+  if (process.platform === 'win32') {
+    return path.join(
+      process.env.LOCALAPPDATA || process.env.APPDATA || os.tmpdir(),
+      'VisualizadorPlanilhas',
+    )
+  }
+  if (process.platform === 'darwin') {
+    return path.join(os.homedir(), 'Library', 'Application Support', 'VisualizadorPlanilhas')
+  }
+  return path.join(os.homedir(), '.config', 'VisualizadorPlanilhas')
+}
+
+app.setPath('userData', userDataDir())
 app.commandLine.appendSwitch('disable-gpu-shader-disk-cache')
 
 protocol.registerSchemesAsPrivileged([
@@ -43,7 +50,7 @@ function createWindow() {
     minWidth: 800,
     minHeight: 520,
     title: 'Visualizador de planilhas',
-    autoHideMenuBar: true,
+    autoHideMenuBar: process.platform !== 'darwin',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -51,7 +58,9 @@ function createWindow() {
     },
   })
 
-  win.setMenuBarVisibility(false)
+  if (process.platform !== 'darwin') {
+    win.setMenuBarVisibility(false)
+  }
   win.loadURL('app://./index.html')
 
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
@@ -60,8 +69,23 @@ function createWindow() {
   })
 }
 
-app.whenReady().then(() => {
+function installMenu() {
+  if (process.platform === 'darwin') {
+    Menu.setApplicationMenu(
+      Menu.buildFromTemplate([
+        { role: 'appMenu' },
+        { role: 'editMenu' },
+        { role: 'viewMenu' },
+        { role: 'windowMenu' },
+      ]),
+    )
+    return
+  }
   Menu.setApplicationMenu(null)
+}
+
+app.whenReady().then(() => {
+  installMenu()
 
   protocol.handle('app', (request) => {
     const filePath = resolveDistFile(request.url)
@@ -69,8 +93,12 @@ app.whenReady().then(() => {
   })
 
   createWindow()
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
 })
 
 app.on('window-all-closed', () => {
-  app.quit()
+  if (process.platform !== 'darwin') app.quit()
 })

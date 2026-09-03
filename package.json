@@ -13,7 +13,9 @@
     "preview": "vite preview",
     "samples": "node scripts/generate-samples.mjs",
     "electron": "npm run build && electron .",
-    "exe": "npm run build && node scripts/build-exe.mjs"
+    "exe": "npm run build && node scripts/build-exe.mjs win",
+    "exe:mac": "npm run build && node scripts/build-exe.mjs mac",
+    "exe:all": "npm run build && node scripts/build-exe.mjs win mac"
   },
   "dependencies": {
     "@tanstack/react-table": "^9.2.4",
@@ -24,6 +26,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@electron/packager": "^20.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.13.3",
     "@types/papaparse": "^5.5.2",
@@ -54,13 +57,30 @@
       "target": [
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "artifactName": "Visualizador-de-Planilhas.exe"
     },
     "portable": {
       "artifactName": "Visualizador-de-Planilhas.exe"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "artifactName": "Visualizador-de-Planilhas-macOS.zip",
+      "identity": null,
+      "gatekeeperAssess": false,
+      "hardenedRuntime": false
     }
   }
 }

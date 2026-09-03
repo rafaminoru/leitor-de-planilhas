@@ -1,0 +1,47 @@
+name: Build macOS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'electron/**'
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/**'
+      - 'vite.config.ts'
+      - 'index.html'
+      - '.github/workflows/build-macos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run exe:mac
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Visualizador-de-Planilhas-macOS
+          path: downloads/Visualizador-de-Planilhas-macOS.zip
+      - name: Publica o zip no repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add downloads/Visualizador-de-Planilhas-macOS.zip
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança no zip"
+            exit 0
+          fi
+          git commit -m "Adiciona executável macOS"
+          git push
