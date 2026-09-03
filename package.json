@@ -72,13 +72,12 @@
       "target": [
         {
           "target": "zip",
-          "arch": [
-            "universal"
-          ]
+          "arch": ["arm64"]
         }
       ],
       "artifactName": "Visualizador-de-Planilhas-macOS.zip",
       "identity": null,
+      "forceCodeSigning": false,
       "gatekeeperAssess": false,
       "hardenedRuntime": false
     }

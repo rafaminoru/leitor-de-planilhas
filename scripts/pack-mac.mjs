@@ -26,16 +26,17 @@ const env = {
 
 const result = spawnSync(
   process.execPath,
-  [builderCli, '--mac', 'zip', '--universal', `-c.directories.output=${outDir}`],
+  [builderCli, '--mac', 'zip', '--arm64', `-c.directories.output=${outDir}`],
   { stdio: 'inherit', env },
 )
 if (result.status !== 0) process.exit(result.status ?? 1)
 
-const built = path.join(outDir, zipName)
-if (!fs.existsSync(built)) {
+const found = fs.readdirSync(outDir).filter((name) => name.endsWith('.zip'))
+if (found.length === 0) {
   console.error('Zip macOS não encontrado em', outDir, fs.readdirSync(outDir))
   process.exit(1)
 }
+const built = path.join(outDir, found[0])
 
 fs.mkdirSync(destDir, { recursive: true })
 fs.mkdirSync(downloadDir, { recursive: true })

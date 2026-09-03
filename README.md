@@ -5,7 +5,7 @@ Abre CSV/TSV/XLSX/XLS e mostra o conteúdo em tabela. Sem backend, sem edição,
 ## Download
 
 - **[Windows (.exe)](https://github.com/rafaminoru/leitor-de-planilhas/raw/main/downloads/Visualizador-de-Planilhas.exe)** (~83 MB)
-- **[macOS (.zip)](https://github.com/rafaminoru/leitor-de-planilhas/raw/main/downloads/Visualizador-de-Planilhas-macOS.zip)** (Intel e Apple Silicon)
+- **[macOS (.zip)](https://github.com/rafaminoru/leitor-de-planilhas/raw/main/downloads/Visualizador-de-Planilhas-macOS.zip)** (Apple Silicon: M1/M2/M3/M4)
 
 ### Windows
 
